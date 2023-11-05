@@ -21,14 +21,6 @@ doit proc
 	; this is a comment i can type whatever i like after a semicolon and assembler will ignore it
 	
 	; ------------------- Introduction to Assembly's call Instruction --------------------------------
-
-
-
-
-
-
-
-	; -------------------- Alternating Operations - Refactoring Redundant Code ---------------------------
 	
 	; * 2^1 + 2^2 * 2^3 + 2^4 * 2^5 + 2^6 +..... 2^n
 
@@ -81,6 +73,66 @@ CalculateNextPower:
 	mov power, eax
 	inc count
 	jmp back2			; BUG: theres back and back2 requires procedures
+
+
+
+
+
+
+
+	; -------------------- Alternating Operations - Refactoring Redundant Code ---------------------------
+	
+	; * 2^1 + 2^2 * 2^3 + 2^4 * 2^5 + 2^6 +..... 2^n
+
+	;	 loop(ebx)		Power(power)	total(ecx)		totalHex
+;		2^1				2				2				2
+;		2^2				4				6				6
+;		2^3				8				48				30
+;		2^4				16				64				40
+;		2^5				32				2048			800
+;		2^6				64				2112			840
+
+;	mov ebx, 2			; Base
+;	;xor ecx, ecx		; 0 out ecx -- startout in zero erases the total
+;	mov ecx, 1
+;
+;again:				; loop mul to add
+;	;;;;;;;; Next power:	; redundant code
+;	;;;;;;;mov eax, power		; for intel structure running eax
+;	;;;;;;;mul ebx				; for intel structure running eax
+;	;;;;;;;mov power, eax		; for intel structure running eax
+;	;;;;;;;inc count
+;
+;	jmp CalculateNextPower			; jump is highly than goto
+;back:
+;	; Multiply the current power to the total
+;	mov eax, power
+;	mul ecx				; replace total to ecx
+;	mov ecx, eax		; replace total to ecx
+;
+;	;;;;;;;; Next power:	; redundant code
+;	;;;;;;;mov eax, power
+;	;;;;;;;mul ebx			
+;	;;;;;;;mov power, eax
+;	;;;;;;;inc count
+;
+;	jmp CalculateNextPower
+;back2:
+;	; Add the power to total
+;	add ecx, power
+;
+;	; Repeat if necessary
+;	cmp count, 5		
+;	jl again
+;	ret
+;
+;CalculateNextPower:
+;	; Next power:	; redundant code
+;	mov eax, power
+;	mul ebx			
+;	mov power, eax
+;	inc count
+;	jmp back2			; BUG: theres back and back2 requires procedures
 
 
 
